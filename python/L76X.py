@@ -83,22 +83,22 @@ class L76X(object):
     
     def L76X_Send_Command(self, data):
         Check = ord(data[1]) 
-        print(Check)
+        # print(Check)
         for i in range(2, len(data)):
             Check = Check ^ ord(data[i]) 
         data = data + Temp[16]
-        print(data)
+        # print(data)
         data = data + Temp[Check//16]
         data = data + Temp[(Check%16)]
         self.config.Uart_SendString(data.encode())
         self.config.Uart_SendByte('\r'.encode())
         self.config.Uart_SendByte('\n'.encode())
-        print(data)
+        # print(data)
         
     def L76X_Gat_GNRMC(self):
         data = self.config.Uart_ReceiveString(BUFFSIZE)
-        print(data)
-        print('\n')
+        # print(data)
+        # print('\n')
         add=0
         self.Status = 0
         for i in range(0, BUFFSIZE-71):
