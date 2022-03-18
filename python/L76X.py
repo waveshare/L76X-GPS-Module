@@ -91,8 +91,8 @@ class L76X(object):
         data = data + Temp[Check//16]
         data = data + Temp[(Check%16)]
         self.config.Uart_SendString(data.encode())
-        self.config.Uart_SendByte('\r')
-        self.config.Uart_SendByte('\n')
+        self.config.Uart_SendByte('\r'.encode())
+        self.config.Uart_SendByte('\n'.encode())
         print(data)
         
     def L76X_Gat_GNRMC(self):
