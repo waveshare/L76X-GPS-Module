@@ -82,7 +82,7 @@ class L76X(object):
         self.config = config.config(9600)
     
     def L76X_Send_Command(self, data):
-        Check = ord(data[1]) 
+        Check = ord(data[0]) 
         for i in range(2, len(data)):
             Check = Check ^ ord(data[i]) 
         data = data + Temp[16]
