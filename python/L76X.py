@@ -90,7 +90,7 @@ class L76X(object):
         print(data)
         data = data + Temp[Check//16]
         data = data + Temp[(Check%16)]
-        self.config.Uart_SendString(data)
+        self.config.Uart_SendString(data.encode())
         self.config.Uart_SendByte('\r')
         self.config.Uart_SendByte('\n')
         print(data)
