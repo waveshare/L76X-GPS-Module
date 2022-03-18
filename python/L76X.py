@@ -82,12 +82,12 @@ class L76X(object):
         self.config = config.config(9600)
     
     def L76X_Send_Command(self, data):
-        Check = ord(data[0]) 
+        Check = ord(data[1]) 
         for i in range(2, len(data)):
             Check = Check ^ ord(data[i]) 
         data = data + Temp[16]
-        data = data + Temp[(Check/16)]
-        data = data + Temp[(Check%16)]
+        # data = data + Temp[(Check/16)]
+        # data = data + Temp[(Check%16)]
         self.config.Uart_SendString(data)
         self.config.Uart_SendByte('\r')
         self.config.Uart_SendByte('\n')
