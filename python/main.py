@@ -22,10 +22,10 @@ try:
             print('Already positioned')
         else:
             print('No positioning')
-        print('Time %d:'%x.Time_H,)
-        print('%d:'%x.Time_M,)
-        print('%d'%x.Time_S)
-
+        # print('Time %d:'%x.Time_H,)
+        # print('%d:'%x.Time_M,)
+        # print('%d'%x.Time_S)
+        print(int(time.time() * 1000))
         print('Lon = %f'%x.Lon,)
         print(' Lat = %f'%x.Lat)
         x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
