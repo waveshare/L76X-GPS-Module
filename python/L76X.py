@@ -86,8 +86,8 @@ class L76X(object):
         for i in range(2, len(data)):
             Check = Check ^ ord(data[i]) 
         data = data + Temp[16]
-        # data = data + Temp[(Check/16)]
-        # data = data + Temp[(Check%16)]
+        data = data + Temp[Check/16]
+        data = data + Temp[Check%16]
         self.config.Uart_SendString(data)
         self.config.Uart_SendByte('\r')
         self.config.Uart_SendByte('\n')
