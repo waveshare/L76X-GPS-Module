@@ -102,9 +102,9 @@ class L76X(object):
         add=0
         self.Status = 0
         for i in range(0, BUFFSIZE-71):
-            if(ord(data[add]) == 36 and ord(data[add+1]) == 71 and (ord(data[add+2]) == 78 \
-            or ord(data[add+2]) == 80) and ord(data[add+3]) == 82 and ord(data[add+4]) == 77\
-            and ord(data[add+5]) == 67):
+            if(data[add]) == 36 and data[add+1] == 71 and (data[add+2] == 78 \
+            or data[add+2] == 80) and data[add+3] == 82 and data[add+4] == 77\
+            and data[add+5] == 67:
                     x = 0
                     z = 0
                     while(x < 12):
