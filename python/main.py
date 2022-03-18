@@ -10,12 +10,12 @@ try:
     time.sleep(2)
     x.L76X_Set_Baudrate(115200)
 
-    x.L76X_Send_Command(x.SET_POS_FIX_400MS);
+    # x.L76X_Send_Command(x.SET_POS_FIX_400MS)
 
     #Set output message
-    x.L76X_Send_Command(x.SET_NMEA_OUTPUT);
+    # x.L76X_Send_Command(x.SET_NMEA_OUTPUT)
 
-    x.L76X_Exit_BackupMode();
+    x.L76X_Exit_BackupMode()
     while(1):
         x.L76X_Gat_GNRMC()
         if(x.Status == 1):
