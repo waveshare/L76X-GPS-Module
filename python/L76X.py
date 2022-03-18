@@ -110,25 +110,25 @@ class L76X(object):
                     while(x < 12):
                         if(add+z >= BUFFSIZE-1):
                             return
-                        if(ord(data[add+z]) == 44):#,
+                        if(data[add+z]) == 44:#,
                             x = x + 1
                             if(x == 1):
                                 Time = 0
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         break
-                                    Time = (ord(data[add+z+k+1]) - 48) + Time*10
+                                    Time = (data[add+z+k+1]) - 48 + Time*10
                                 self.Time_H = Time/10000 + 8
                                 self.Time_M = Time/100%100
                                 self.Time_S = Time%100
                                 if(self.Time_H >= 24):
                                      self.Time_H =  self.Time_H - 24
                             elif(x == 2):
-                                if(ord(data[add+z+1]) == 65):#A
+                                if(data[add+z+1]) == 65:#A
                                     self.Status = 1
                                 else:
                                     self.Status = 0
@@ -137,11 +137,11 @@ class L76X(object):
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         continue
-                                    latitude = (ord(data[add+z+k+1]) - 48) + latitude*10
+                                    latitude = (data[add+z+k+1]) - 48 + latitude*10
                                 self.Lat = latitude / 1000000.0
                             elif(x == 4):
                                 self.Lat_area = data[add+z+1]
@@ -150,11 +150,11 @@ class L76X(object):
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         continue
-                                    longitude = (ord(data[add+z+k+1]) - 48) + longitude*10
+                                    longitude = (data[add+z+k+1]) - 48 + longitude*10
                                 
                                 self.Lon = longitude / 1000000.0
                             elif(x == 6):
