@@ -1,6 +1,7 @@
 import L76X
 import time
 import math
+import sys, os
 
 try:
     x=L76X.L76X()
@@ -31,7 +32,7 @@ try:
         print('Baidu coordinate %f'%x.Lat_Baidu,)
         print(',%f'%x.Lon_Baidu)
 except Exception as e:
-    print(e)
+    print(sys.exc_info())
     #GPIO.cleanup()
     print("\nProgram end")
     exit()
