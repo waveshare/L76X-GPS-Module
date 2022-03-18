@@ -30,7 +30,8 @@ try:
         x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
         print('Baidu coordinate %f'%x.Lat_Baidu,)
         print(',%f'%x.Lon_Baidu)
-except:
+except Exception as e:
+    print(e)
     #GPIO.cleanup()
     print("\nProgram end")
     exit()
