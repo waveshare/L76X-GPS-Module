@@ -20,10 +20,10 @@ try:
     x.L76X_Exit_BackupMode()
     while(1):
         x.L76X_Gat_GNRMC()
-        # if(x.Status == 1):
-        #     print('Already positioned')
-        # else:
-        #     print('No positioning')
+        if(x.Status == 1):
+            redis.set('sat_use', 6)
+        else:
+            redis.set('sat_use', 0)
         # print('Time %d:'%x.Time_H,)
         # print('%d:'%x.Time_M,)
         # print('%d'%x.Time_S)
