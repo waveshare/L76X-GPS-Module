@@ -31,7 +31,7 @@ try:
         print('Lon = %f'%x.Lon,)
         print(' Lat = %f'%x.Lat)
         print(x.GPS_Lat, x.GPS_Lon)
-        print(x.Goodle_Lat, x.Goodle_Lon)
+        print(x.Lat_Goodle, x.Lon_Goodle)
         redis.set('gps_lng', -1.0 * x.Lon)
         redis.set('gps_lat', x.Lat)
         print(type(x.Lon))
