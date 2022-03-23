@@ -30,8 +30,8 @@ try:
         print(int(time.time() * 1000))
         print('Lon = %f'%x.Lon,)
         print(' Lat = %f'%x.Lat)
-        x.Lon = x.Lon * -1.0000000
-        redis.set('gps_lon', x.Lon)
+        # x.Lon = x.Lon * -1.0000000
+        redis.set('gps_lng', x.Lon)
         redis.set('gps_lat', x.Lat)
         print(type(x.Lon))
         x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
