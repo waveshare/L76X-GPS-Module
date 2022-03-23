@@ -30,8 +30,8 @@ try:
         print(int(time.time() * 1000))
         print('Lon = %f'%x.Lon,)
         print(' Lat = %f'%x.Lat)
-        # x.Lon = x.Lon * -1.0000000
-        print(x)
+        print(x.GPS_Lat, x.GPS_Lon)
+        print(x.Goodle_Lat, x.Goodle_Lon)
         redis.set('gps_lng', -1.0 * x.Lon)
         redis.set('gps_lat', x.Lat)
         print(type(x.Lon))
