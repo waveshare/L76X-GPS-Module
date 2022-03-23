@@ -30,11 +30,11 @@ try:
         # print(int(time.time() * 1000))
         # print('Lon = %f'%x.Lon,)
         # print(' Lat = %f'%x.Lat)
-        print(x.Lat_Goodle, x.Lon_Goodle)
+        x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
+        print(x.Lat_Goodle, -1.00000000 * x.Lon_Goodle)
         redis.set('gps_lng', -1.00000000 * x.Lon_Goodle)
         redis.set('gps_lat', x.Lat_Goodle)
         # print(type(x.Lon))
-        # x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
         # print('Baidu coordinate %f'%x.Lat_Baidu,)
         # print(',%f'%x.Lon_Baidu)
 except Exception as e:
