@@ -24,8 +24,8 @@ class L76X(object):
     Status = 0
     Lon_Baidu = 0.0
     Lat_Baidu = 0.0
-    Lon_Goodle = 0.0
-    Lat_Goodle = 0.0
+    Lon_Google = 0.0
+    Lat_Google = 0.0
     
     GPS_Lon = 0
     GPS_Lat = 0
@@ -178,8 +178,8 @@ class L76X(object):
         return ret
 
     def bd_encrypt(self):
-        x = self.Lon_Goodle
-        y = self.Lat_Goodle
+        x = self.Lon_Google
+        y = self.Lat_Google
         z = math.sqrt(x * x + y * y) + 0.00002 * math.sin(y * x_pi)
         theta = math.atan2(y, x) + 0.000003 * math.cos(x * x_pi)
         self.Lon_Baidu = z * math.cos(theta) + 0.0065
@@ -194,8 +194,8 @@ class L76X(object):
         math.sqrtMagic = math.sqrt(magic)
         dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * math.sqrtMagic) * pi)
         dLon = (dLon * 180.0) / (a / math.sqrtMagic * math.cos(radLat) * pi)
-        self.Lat_Goodle = self.GPS_Lat + dLat
-        self.Lon_Goodle = self.GPS_Lon + dLon
+        self.Lat_Google = self.GPS_Lat + dLat
+        self.Lon_Google = self.GPS_Lon + dLon
 
     def L76X_Baidu_Coordinates(self, U_Lat, U_Lon):
         self.GPS_Lat = U_Lat % 1 *100 / 60 + math.floor(U_Lat)
