@@ -30,6 +30,7 @@ try:
         # print(int(time.time() * 1000))
         # print('Lon = %f'%x.Lon,)
         # print(' Lat = %f'%x.Lat)
+        x.L76X_Google_Coordinates(x.Lat, x.Lon)
         x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
         print(x.Lat_Goodle, -x.Lon_Goodle)
         redis.set('gps_lng', -x.Lon_Goodle)
