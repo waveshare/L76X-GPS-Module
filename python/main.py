@@ -20,23 +20,23 @@ try:
     x.L76X_Exit_BackupMode()
     while(1):
         x.L76X_Gat_GNRMC()
-        if(x.Status == 1):
-            print('Already positioned')
-        else:
-            print('No positioning')
+        # if(x.Status == 1):
+        #     print('Already positioned')
+        # else:
+        #     print('No positioning')
         # print('Time %d:'%x.Time_H,)
         # print('%d:'%x.Time_M,)
         # print('%d'%x.Time_S)
-        print(int(time.time() * 1000))
-        print('Lon = %f'%x.Lon,)
-        print(' Lat = %f'%x.Lat)
+        # print(int(time.time() * 1000))
+        # print('Lon = %f'%x.Lon,)
+        # print(' Lat = %f'%x.Lat)
         print(x.Lat_Goodle, x.Lon_Goodle)
-        redis.set('gps_lng', -1.0 * x.Lon_Goodle)
+        redis.set('gps_lng', -1.00000000 * x.Lon_Goodle)
         redis.set('gps_lat', x.Lat_Goodle)
-        print(type(x.Lon))
-        x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
-        print('Baidu coordinate %f'%x.Lat_Baidu,)
-        print(',%f'%x.Lon_Baidu)
+        # print(type(x.Lon))
+        # x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
+        # print('Baidu coordinate %f'%x.Lat_Baidu,)
+        # print(',%f'%x.Lon_Baidu)
 except Exception as e:
     print(traceback.format_exc())
     #GPIO.cleanup()
