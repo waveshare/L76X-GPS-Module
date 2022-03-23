@@ -2,8 +2,10 @@ import L76X
 import time
 import math
 import traceback
+import redis_class
 
 try:
+    redis = redis_class.RedisClient(host='192.168.0.150', port=6379, password="Redis2019!")
     x=L76X.L76X()
     x.L76X_Set_Baudrate(9600)
     x.L76X_Send_Command(x.SET_NMEA_BAUDRATE_115200)
@@ -28,6 +30,8 @@ try:
         print(int(time.time() * 1000))
         print('Lon = %f'%x.Lon,)
         print(' Lat = %f'%x.Lat)
+        redis.set('gps_lon', x.Lon)
+        redis.set('gps_lat', x.Lat)
         x.L76X_Baidu_Coordinates(x.Lat, x.Lon)
         print('Baidu coordinate %f'%x.Lat_Baidu,)
         print(',%f'%x.Lon_Baidu)
