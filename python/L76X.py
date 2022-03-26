@@ -187,7 +187,7 @@ class L76X(object):
 
     def transform(self):
         dLat = self.transformLat(self.GPS_Lon - 105.0, self.GPS_Lat - 35.0)
-        dLon = self.transformLon(self.GPS_Lon - 90.0, self.GPS_Lat - 35.0)
+        dLon = self.transformLon(self.GPS_Lon - 60.0, self.GPS_Lat - 35.0)
         radLat = self.GPS_Lat / 180.0 * pi
         magic = math.sin(radLat)
         magic = 1 - ee * magic * magic
