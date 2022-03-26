@@ -195,7 +195,7 @@ class L76X(object):
         dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * math.sqrtMagic) * pi)
         dLon = (dLon * 180.0) / (a / math.sqrtMagic * math.cos(radLat) * pi)
         self.Lat_Google = self.GPS_Lat + dLat
-        self.Lon_Google = self.GPS_Lon + dLon - .1
+        self.Lon_Google = self.GPS_Lon + dLon - .001
 
     def L76X_Baidu_Coordinates(self, U_Lat, U_Lon):
         self.GPS_Lat = U_Lat % 1 *100 / 60 + math.floor(U_Lat)
