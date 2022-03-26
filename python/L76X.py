@@ -187,7 +187,7 @@ class L76X(object):
 
     def transform(self):
         dLat = self.transformLat(self.GPS_Lon - 105.0, self.GPS_Lat - 35.0)
-        dLon = self.transformLon(self.GPS_Lon - 60.0, self.GPS_Lat - 35.0)
+        dLon = self.transformLon(self.GPS_Lon - 105.0, self.GPS_Lat - 35.0)
         radLat = self.GPS_Lat / 180.0 * pi
         magic = math.sin(radLat)
         magic = 1 - ee * magic * magic
@@ -195,7 +195,7 @@ class L76X(object):
         dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * math.sqrtMagic) * pi)
         dLon = (dLon * 180.0) / (a / math.sqrtMagic * math.cos(radLat) * pi)
         self.Lat_Google = self.GPS_Lat + dLat
-        self.Lon_Google = self.GPS_Lon + dLon
+        self.Lon_Google = self.GPS_Lon + dLon - 10
 
     def L76X_Baidu_Coordinates(self, U_Lat, U_Lon):
         self.GPS_Lat = U_Lat % 1 *100 / 60 + math.floor(U_Lat)
