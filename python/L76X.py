@@ -24,8 +24,8 @@ class L76X(object):
     Status = 0
     Lon_Baidu = 0.0
     Lat_Baidu = 0.0
-    Lon_Goodle = 0.0
-    Lat_Goodle = 0.0
+    Lon_Google = 0.0
+    Lat_Google = 0.0
     
     GPS_Lon = 0
     GPS_Lat = 0
@@ -83,50 +83,52 @@ class L76X(object):
     
     def L76X_Send_Command(self, data):
         Check = ord(data[1]) 
+        # print(Check)
         for i in range(2, len(data)):
             Check = Check ^ ord(data[i]) 
         data = data + Temp[16]
-        data = data + Temp[(Check/16)]
+        # print(data)
+        data = data + Temp[Check//16]
         data = data + Temp[(Check%16)]
-        self.config.Uart_SendString(data)
-        self.config.Uart_SendByte('\r')
-        self.config.Uart_SendByte('\n')
-        print data
+        self.config.Uart_SendString(data.encode())
+        self.config.Uart_SendByte('\r'.encode())
+        self.config.Uart_SendByte('\n'.encode())
+        # print(data)
         
     def L76X_Gat_GNRMC(self):
         data = self.config.Uart_ReceiveString(BUFFSIZE)
-        print data
-        print '\n'
+        # print(data)
+        # print('\n')
         add=0
         self.Status = 0
         for i in range(0, BUFFSIZE-71):
-            if(ord(data[add]) == 36 and ord(data[add+1]) == 71 and (ord(data[add+2]) == 78 \
-            or ord(data[add+2]) == 80) and ord(data[add+3]) == 82 and ord(data[add+4]) == 77\
-            and ord(data[add+5]) == 67):
+            if(data[add]) == 36 and data[add+1] == 71 and (data[add+2] == 78 \
+            or data[add+2] == 80) and data[add+3] == 82 and data[add+4] == 77\
+            and data[add+5] == 67:
                     x = 0
                     z = 0
                     while(x < 12):
                         if(add+z >= BUFFSIZE-1):
                             return
-                        if(ord(data[add+z]) == 44):#,
+                        if(data[add+z]) == 44:#,
                             x = x + 1
                             if(x == 1):
                                 Time = 0
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         break
-                                    Time = (ord(data[add+z+k+1]) - 48) + Time*10
+                                    Time = (data[add+z+k+1]) - 48 + Time*10
                                 self.Time_H = Time/10000 + 8
                                 self.Time_M = Time/100%100
                                 self.Time_S = Time%100
                                 if(self.Time_H >= 24):
                                      self.Time_H =  self.Time_H - 24
                             elif(x == 2):
-                                if(ord(data[add+z+1]) == 65):#A
+                                if(data[add+z+1]) == 65:#A
                                     self.Status = 1
                                 else:
                                     self.Status = 0
@@ -135,11 +137,11 @@ class L76X(object):
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         continue
-                                    latitude = (ord(data[add+z+k+1]) - 48) + latitude*10
+                                    latitude = (data[add+z+k+1]) - 48 + latitude*10
                                 self.Lat = latitude / 1000000.0
                             elif(x == 4):
                                 self.Lat_area = data[add+z+1]
@@ -148,11 +150,11 @@ class L76X(object):
                                 for k in range(0, BUFFSIZE-1):
                                     if(add+z+k >= BUFFSIZE-1):
                                         return
-                                    if(ord(data[add+z+k+1]) == 44):#,
+                                    if(data[add+z+k+1]) == 44:#,
                                         break
-                                    if(ord(data[add+z+k+1]) == 46):#.
+                                    if(data[add+z+k+1]) == 46:#.
                                         continue
-                                    longitude = (ord(data[add+z+k+1]) - 48) + longitude*10
+                                    longitude = (data[add+z+k+1]) - 48 + longitude*10
                                 
                                 self.Lon = longitude / 1000000.0
                             elif(x == 6):
@@ -176,8 +178,8 @@ class L76X(object):
         return ret
 
     def bd_encrypt(self):
-        x = self.Lon_Goodle
-        y = self.Lat_Goodle
+        x = self.Lon_Google
+        y = self.Lat_Google
         z = math.sqrt(x * x + y * y) + 0.00002 * math.sin(y * x_pi)
         theta = math.atan2(y, x) + 0.000003 * math.cos(x * x_pi)
         self.Lon_Baidu = z * math.cos(theta) + 0.0065
@@ -192,8 +194,8 @@ class L76X(object):
         math.sqrtMagic = math.sqrt(magic)
         dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * math.sqrtMagic) * pi)
         dLon = (dLon * 180.0) / (a / math.sqrtMagic * math.cos(radLat) * pi)
-        self.Lat_Goodle = self.GPS_Lat + dLat
-        self.Lon_Goodle = self.GPS_Lon + dLon
+        self.Lat_Google = self.GPS_Lat + dLat - 0.00003
+        self.Lon_Google = self.GPS_Lon + dLon - .00293
 
     def L76X_Baidu_Coordinates(self, U_Lat, U_Lon):
         self.GPS_Lat = U_Lat % 1 *100 / 60 + math.floor(U_Lat)
