@@ -2,6 +2,9 @@ import RPi.GPIO as GPIO
 import config
 import math
 import time
+from micropyGPS import MicropyGPS
+
+g = MicropyGPS(+8)
 
 Temp = '0123456789ABCDEF*'
 BUFFSIZE = 1100
@@ -94,72 +97,32 @@ class L76X(object):
         print (data)
         
     def L76X_Gat_GNRMC(self):
-        data = self.config.Uart_ReceiveString(BUFFSIZE)
-        print (data)
-        print ('\n')
-        add=0
-        self.Status = 0
-        for i in range(0, BUFFSIZE-71):
-            if(ord(data[add]) == 36 and ord(data[add+1]) == 71 and (ord(data[add+2]) == 78 \
-            or ord(data[add+2]) == 80) and ord(data[add+3]) == 82 and ord(data[add+4]) == 77\
-            and ord(data[add+5]) == 67):
-                    x = 0
-                    z = 0
-                    while(x < 12):
-                        if(add+z >= BUFFSIZE-1):
-                            return
-                        if(ord(data[add+z]) == 44):#,
-                            x = x + 1
-                            if(x == 1):
-                                Time = 0
-                                for k in range(0, BUFFSIZE-1):
-                                    if(add+z+k >= BUFFSIZE-1):
-                                        return
-                                    if(ord(data[add+z+k+1]) == 44):#,
-                                        break
-                                    if(ord(data[add+z+k+1]) == 46):#.
-                                        break
-                                    Time = (ord(data[add+z+k+1]) - 48) + Time*10
-                                self.Time_H = Time/10000 + 8
-                                self.Time_M = Time/100%100
-                                self.Time_S = Time%100
-                                if(self.Time_H >= 24):
-                                     self.Time_H =  self.Time_H - 24
-                            elif(x == 2):
-                                if(ord(data[add+z+1]) == 65):#A
-                                    self.Status = 1
-                                else:
-                                    self.Status = 0
-                            elif(x == 3):
-                                latitude = 0
-                                for k in range(0, BUFFSIZE-1):
-                                    if(add+z+k >= BUFFSIZE-1):
-                                        return
-                                    if(ord(data[add+z+k+1]) == 44):#,
-                                        break
-                                    if(ord(data[add+z+k+1]) == 46):#.
-                                        continue
-                                    latitude = (ord(data[add+z+k+1]) - 48) + latitude*10
-                                self.Lat = latitude / 1000000.0
-                            elif(x == 4):
-                                self.Lat_area = data[add+z+1]
-                            elif(x == 5):
-                                longitude = 0
-                                for k in range(0, BUFFSIZE-1):
-                                    if(add+z+k >= BUFFSIZE-1):
-                                        return
-                                    if(ord(data[add+z+k+1]) == 44):#,
-                                        break
-                                    if(ord(data[add+z+k+1]) == 46):#.
-                                        continue
-                                    longitude = (ord(data[add+z+k+1]) - 48) + longitude*10
-                                
-                                self.Lon = longitude / 1000000.0
-                            elif(x == 6):
-                                self.Lon_area = data[add+z+1]
-                                return#Completion calculation
-                        z = z + 1
-            add = add + 1
+        data=''
+        while 1:
+            if g.valid:
+                self.Status = 1
+            else:
+                self.Status = 0
+            x=self.config.Uart_ReceiveByte()
+            if x==b'$':
+                while (x!=b'\r'):
+                    data+=x.decode()
+                    g.update(x.decode())
+                    x=self.config.Uart_ReceiveByte()
+                data+='\r\n'
+                if '$GNGLL' in data:
+                    break
+        self.Lat=g.latitude[0]+g.latitude[1]/100
+        self.Lon=g.longitude[0]+g.longitude[1]/100
+        if g.latitude[2]!='N':
+            self.Lat=self.Lat*(-1)
+        if g.longitude[2]!='E':
+            self.Lon=self.Lon*(-1)
+        self.Time_H = g.timestamp[0]
+        self.Time_M = g.timestamp[1]
+        self.Time_S = g.timestamp[2]
+        print(data)
+        data='\r\n'
 
     def  transformLat(self, x, y):
         ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 *math.sqrt(abs(x))
